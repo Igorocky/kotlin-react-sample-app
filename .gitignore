@@ -33,5 +33,8 @@ build/
 .vscode/
 
 ### Frontend ###
-/src/main/resources/frontend/node_modules/
-/src/main/resources/frontend/.vscode/
+/src/main/frontend/src/*.bs.js
+/src/main/frontend/.merlin
+/src/main/frontend/node_modules/
+/src/main/frontend/build/
+/src/main/frontend/lib/
