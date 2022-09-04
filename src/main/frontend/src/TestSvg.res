@@ -13,8 +13,7 @@ let ints = Belt.Array.range
 
 let makePoint = (x,y) => ex->vecMult(x)->vecAdd(ey->vecMult(-.y))->vecEnd
 
-let p = BE.getData2({id:34})
-Js.Console.log("p = $p")
+let p = BE.getData2({id:34}) -> BE.promiseThen(r => Js_console.log2("The BE responded with: ", r))
 
 let svgOnClick = (~mouseEvent, ~viewWidth, ~viewHeight, ~boundaries, ~customHandler) => {
   let target = ref(ReactEvent.Mouse.target(mouseEvent))

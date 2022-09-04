@@ -22,7 +22,11 @@ type getDataResp = {
 }
 
 let promiseFlatMap = (p,m) => p -> Js.Promise.then_(m, _)
-let promiseMap = (p,m) => p -> promiseFlatMap(x => Js_promise.resolve(m(x)))
+let promiseMap = (p,m) => p -> promiseFlatMap(v => Js_promise.resolve(m(v)))
+let promiseThen = (p,consumer) => p -> promiseMap(v => {
+    consumer(v)
+    ()
+})
 let promiseCatchV = (p,m) => p -> Js.Promise.catch(err => {
     m(err)
     p
