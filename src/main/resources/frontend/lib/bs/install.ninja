@@ -1,0 +1,22 @@
+rescript = 1
+rule cp
+  command = cmd.exe /C copy /Y $i $out >NUL
+rule touch
+ command = cmd.exe /C type nul >>$out & copy $out+,, >NUL
+o Cmp2.cmi : cp ..\bs\src\Cmp2.cmi
+o Cmp2.cmj : cp ..\bs\src\Cmp2.cmj
+o Cmp2.cmt : cp ..\bs\src\Cmp2.cmt
+o Cmp2.res : cp ..\..\src\Cmp2.res
+o TestSvg.cmi : cp ..\bs\src\TestSvg.cmi
+o TestSvg.cmj : cp ..\bs\src\TestSvg.cmj
+o TestSvg.cmt : cp ..\bs\src\TestSvg.cmt
+o TestSvg.res : cp ..\..\src\TestSvg.res
+o MainView.cmi : cp ..\bs\src\MainView.cmi
+o MainView.cmj : cp ..\bs\src\MainView.cmj
+o MainView.cmt : cp ..\bs\src\MainView.cmt
+o MainView.res : cp ..\..\src\MainView.res
+o JsonParseView.cmi : cp ..\bs\src\JsonParseView.cmi
+o JsonParseView.cmj : cp ..\bs\src\JsonParseView.cmj
+o JsonParseView.cmt : cp ..\bs\src\JsonParseView.cmt
+o JsonParseView.res : cp ..\..\src\JsonParseView.res
+build install.stamp : touch Cmp2.cmi Cmp2.cmj TestSvg.cmi TestSvg.cmj MainView.cmi MainView.cmj JsonParseView.cmi JsonParseView.cmj 

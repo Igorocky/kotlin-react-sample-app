@@ -1,0 +1,24 @@
+rescript = 1
+g_finger := C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\@rescript\react\lib\ocaml\install.stamp
+g_finger := C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\@expln\utils\lib\ocaml\install.stamp
+rule astj
+  command = "C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\rescript\win32\bsc.exe"  -warn-error +101 -bs-v 9.1.4 -bs-jsx 3  -absname -bs-ast -o $out $i
+o src\Cmp2.ast : astj ..\..\src\Cmp2.res
+rule deps
+  command = "C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\rescript\win32\bsb_helper.exe" -hash 07551a6cd6aeffd59d4e96b0ddb8d0ef $in
+  restat = 1
+o src\Cmp2.d : deps src\Cmp2.ast
+rule mij
+  command = "C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\rescript\win32\bsc.exe" -I src -I "C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\@rescript\react\lib\ocaml" -I "C:\Users\Igor\igye\projects\js\learn-js-react-app\node_modules\@expln\utils\lib\ocaml"   -warn-error +101 -bs-package-name learn-js-react-app -bs-package-output commonjs:$in_d:.bs.js -bs-v $g_finger $i
+  dyndep = 1
+  restat = 1
+o src\Cmp2.cmj src\Cmp2.cmi ..\..\src\Cmp2.bs.js : mij src\Cmp2.ast
+o src\TestSvg.ast : astj ..\..\src\TestSvg.res
+o src\TestSvg.d : deps src\TestSvg.ast
+o src\TestSvg.cmj src\TestSvg.cmi ..\..\src\TestSvg.bs.js : mij src\TestSvg.ast
+o src\MainView.ast : astj ..\..\src\MainView.res
+o src\MainView.d : deps src\MainView.ast
+o src\MainView.cmj src\MainView.cmi ..\..\src\MainView.bs.js : mij src\MainView.ast
+o src\JsonParseView.ast : astj ..\..\src\JsonParseView.res
+o src\JsonParseView.d : deps src\JsonParseView.ast
+o src\JsonParseView.cmj src\JsonParseView.cmi ..\..\src\JsonParseView.bs.js : mij src\JsonParseView.ast
