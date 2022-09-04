@@ -13,7 +13,7 @@ let ints = Belt.Array.range
 
 let makePoint = (x,y) => ex->vecMult(x)->vecAdd(ey->vecMult(-.y))->vecEnd
 
-let p = BE.getData({id:34})
+let p = BE.getData2({id:34})
 Js.Console.log("p = $p")
 
 let svgOnClick = (~mouseEvent, ~viewWidth, ~viewHeight, ~boundaries, ~customHandler) => {

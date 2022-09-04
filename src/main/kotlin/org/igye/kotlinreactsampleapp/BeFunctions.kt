@@ -11,8 +11,8 @@ class BeFunctions {
     data class GetAllDataRequest(val id: Long)
     data class GetAllDataResponse(val data: List<String>)
     @PostMapping("getAllData", consumes = ["application/json"], produces = ["application/json"])
-    fun be(@RequestBody body: GetAllDataRequest): GetAllDataResponse {
+    fun be(@RequestBody body: GetAllDataRequest): BeRespose<GetAllDataResponse> {
         println("body = '$body'")
-        return GetAllDataResponse(data = listOf("ddd", "ffff", "rrerwer"))
+        return BeRespose(data = GetAllDataResponse(data = listOf("ddd", "ffff", "rrerwer")))
     }
 }
