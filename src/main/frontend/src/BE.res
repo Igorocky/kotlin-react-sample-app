@@ -1,6 +1,6 @@
 
 open Expln_utils_jsonParse
-let {exn} = module(Expln_utils_common)
+let {exn,promiseMap,promiseFlatMap} = module(Expln_utils_common)
 
 @val external fetch: (string,'a) => Js_promise.t<{..}> = "fetch"
 
@@ -14,24 +14,6 @@ type beResp<'a> = {
     err: Js.Option.t<beErr>,
 }
 
-type getDataReq = {
-    id: int
-}
-type getDataResp = {
-    data: array<string>
-}
-
-let promiseFlatMap = (p,m) => p -> Js.Promise.then_(m, _)
-let promiseMap = (p,m) => p -> promiseFlatMap(v => Js_promise.resolve(m(v)))
-let promiseThen = (p,consumer) => p -> promiseMap(v => {
-    consumer(v)
-    ()
-})
-let promiseCatchV = (p,m) => p -> Js.Promise.catch(err => {
-    m(err)
-    p
-}, _)
-
 let parseBeResp: (string, jsonAny=>'a) => beResp<'a> = (respStr:string, dataMapper:jsonAny=>'a) => switch parseObj(respStr, d => {
     data: d->objOpt("data", dataMapper),
     err: d->objOpt("err", d=>{
@@ -39,7 +21,13 @@ let parseBeResp: (string, jsonAny=>'a) => beResp<'a> = (respStr:string, dataMapp
         msg: d->str("msg"),
     }),
 }) {
-   | Ok(r) => r
+   | Ok(r) => switch r.data {
+        | Some(_) => r
+        | None => switch r.err {
+            | Some(_) => r
+            | _ => exn(`BE response doesn't contain neither 'data' nor 'err': ${respStr}`)
+        }
+   }
    | Error(msg) => {
         Js_console.log2(`An error occured during parse of BE response: ${respStr}`, msg)
         exn(msg)
@@ -60,6 +48,9 @@ let createBeFunction: (string, jsonAny => 'resp) => 'req => Js_promise.t<beResp<
     })
     -> promiseMap(s => parseBeResp(s,respMapper))
 
+type getDataReq = { id: int }
+type getDataResp = { data: array<string> }
+
 let getData2: getDataReq => Js_promise.t<beResp<getDataResp>> = createBeFunction("getAllData", js => {
-    data: js->arr("data", d => d->Js_json.stringifyAny -> Belt_Option.getExn)
+    data: js->arr("data", asStr)
 })

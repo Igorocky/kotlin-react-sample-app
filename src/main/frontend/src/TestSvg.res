@@ -1,6 +1,7 @@
 //open Js.Console
 open Expln_2d
 open Expln_common_bindings
+let {exn,promiseMap,promiseFlatMap} = module(Expln_utils_common)
 
 let style = ReactDOM.Style.make
 
@@ -13,7 +14,9 @@ let ints = Belt.Array.range
 
 let makePoint = (x,y) => ex->vecMult(x)->vecAdd(ey->vecMult(-.y))->vecEnd
 
-let p = BE.getData2({id:34}) -> BE.promiseThen(r => Js_console.log2("The BE responded with: ", r))
+let p = BE.getData2({id:34}) -> promiseMap(r =>
+  Js_console.log2(">>> The BE responded with: ", r)
+)
 
 let svgOnClick = (~mouseEvent, ~viewWidth, ~viewHeight, ~boundaries, ~customHandler) => {
   let target = ref(ReactEvent.Mouse.target(mouseEvent))
