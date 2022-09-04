@@ -34,6 +34,8 @@ let parseBeResp: (string, jsonAny=>'a) => beResp<'a> = (respStr:string, dataMapp
    }
 }
 
+type beFunc<'req,'resp> = 'req => Js_promise.t<beResp<'resp>>
+
 let createBeFunction: (string, jsonAny => 'resp) => 'req => Js_promise.t<beResp<'resp>> = 
     (funcName, respMapper) => req => fetch(`/be/${funcName}`, {
         "method": "POST",
@@ -51,6 +53,6 @@ let createBeFunction: (string, jsonAny => 'resp) => 'req => Js_promise.t<beResp<
 type getDataReq = { id: int }
 type getDataResp = { data: array<string> }
 
-let getData2: getDataReq => Js_promise.t<beResp<getDataResp>> = createBeFunction("getAllData", js => {
+let getData2: beFunc<getDataReq, getDataResp> = createBeFunction("getAllData", js => {
     data: js->arr("data", asStr)
 })
