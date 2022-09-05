@@ -8,7 +8,7 @@ data class BeRespose<T>(val data: T? = null, val err: BeErr? = null) {
     }
 
     companion object {
-        operator fun <T> invoke(errCode: Long, errHandler: ((Exception) -> T)? = null, body: () -> T): BeRespose<T> {
+        operator fun <T> invoke(errCode: Long = -1, errHandler: ((Exception) -> T)? = null, body: () -> T): BeRespose<T> {
             return try {
                 BeRespose(data = body())
             } catch (ex: Exception) {
